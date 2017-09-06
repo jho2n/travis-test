@@ -20,16 +20,16 @@ language: ruby
 
 before_install:
   - echo "install docker-ce"
-  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-  - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  - apt-get update
-  - apt-get -y install docker-ce
+  - sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get -y install docker-ce
   - echo docker --version
   - echo "install docker-compose"
   - rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - mv docker-compose /usr/local/bin
+  - sudo curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - sudo chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
   - echo docker-compose --version
   # - docker-compose -f docker/dev.docker-compose.yml
   - docker pull carlad/sinatra
