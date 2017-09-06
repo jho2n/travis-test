@@ -1,0 +1,42 @@
+notifications:
+  slack:
+    rooms:
+      - $SLACK_ACCOUNT:$SLACK_TOKEN#build-result
+    on_success: always
+    on_failure: always
+  email:
+    recipients:
+      - ajho2n@gmail.com
+    on_success: always
+    on_failure: always
+dist: trusty
+
+sudo: required
+
+services:
+  - docker
+env:
+  - DOCKER_COMPOSE_VERSION=1.15.0
+
+language: ruby
+
+before_install:
+  - echo "install docker-ce"
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+  - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - apt-get update
+  - apt-get -y install docker-ce
+  - echo docker --version
+  - echo "install docker-compose"
+  - rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - mv docker-compose /usr/local/bin
+  - echo docker-compose --version
+  # - docker-compose -f docker/dev.docker-compose.yml
+  - docker pull carlad/sinatra
+  - docker run -d -p 127.0.0.1:80:4567 carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec foreman start;"
+  - docker ps -a
+  - docker run carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec rake test"
+script:
+  - bundle exec rake test
