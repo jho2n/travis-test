@@ -11,8 +11,6 @@ notifications:
     on_failure: always
 dist: trusty
 
-sudo: required
-
 services:
   - docker
 env:
