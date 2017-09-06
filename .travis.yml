@@ -19,16 +19,17 @@ env:
 language: ruby
 
 before_install:
+  # install docker
   - echo "install docker-ce"
-  - sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
   - sudo apt-get -y install docker-ce
   - echo docker --version
-  - echo "install docker-compose"
-  - rm /usr/local/bin/docker-compose
-  - sudo curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - sudo chmod +x docker-compose
+  # install docker-compose
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - echo docker-compose --version
   # - docker-compose -f docker/dev.docker-compose.yml
